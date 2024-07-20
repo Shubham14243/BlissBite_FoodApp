@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> BlissBite - Register</title>
+
+  {% include 'cscript.html' %}
+
+</head>
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    {% include 'header.html' %}
+    <!-- end header section -->
+  </div>
+
+  <!-- book section -->
+  <section class="book_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Register
+        </h2>
+          {% if message %}
+              {% if message[0] < 1 %}
+              <div class="alert">
+                <span class="closebtn">&times;</span>
+                <strong>{{message[1]}}</strong>
+              </div>
+              {% elif message[0] == 1 %}
+                <div class="alert success">
+                  <span class="closebtn">&times;</span>
+                  <strong>{{message[1]}}</strong>
+                </div>
+              {% endif %}
+            {% endif %}
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <div class="form_container">
+            <form action="" onsubmit="return valid();" method="POST">
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Your Name" name="name" id="name" onblur="return chkname();" />
+                  <p id="valname" style="display:none;"><strong><span style="color: red;font-weight: bold;">Enter Valid Name!</span></strong></p>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Your Phone" name="phone" id="phone" onblur="return chkphone();" />
+                  <p id="valphone" style="display:none;"><strong><span style="color: red;font-weight: bold;">Enter Valid Phone!</span></strong></p>
+                </div>
+              </div>
+              <div>
+                <input type="email" class="form-control" placeholder="Your Email" name="email" id="email" onblur="return chkemail();" />
+                <p id="valemail" style="display:none;"><strong><span style="color: red;font-weight: bold;">Enter Valid Email!</span></strong></p>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="password" class="form-control" placeholder="Your Password" name="password" id="password" onblur="return chkpass();" />
+                  <p id="valpassword" style="display:none;"><strong><span style="color: red;font-weight: bold;">Password : 6-12 Digits<br>1 UpperCase; 1 Lowercase; 1 Number; 1 Special Character</span></strong></p>
+                </div>
+                <div class="col-md-6">
+                  <input type="password" class="form-control" placeholder="Confirm Password" name="confirm" id="confirm" onkeyup="return chkconfirm();" />
+                  <p id="valconfirm" style="display:none;"><strong><span style="color: red;font-weight: bold;">Password & Confirm Password Not Matched!</span></strong></p>
+                </div>
+              </div>
+              <div class="btn_box" style="display:flex;justify-content: center;">
+                <button>
+                  Register
+                </button>
+              </div>
+              <div class="btn_box" style="display:flex;justify-content: center;padding: 20px;">
+                <span style="font-weight: bold;">Already User ? &nbsp;&nbsp;&nbsp;&nbsp;<a class="navbar-brand" href="{{ url_for('route.login') }}" style="text-decoration:none;"> Login</a></span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+    </div>
+  </section>
+  <!-- end book section -->
+
+  <!-- footer section -->
+  {% include 'footer.html' %}
+  <!-- footer section -->
+
+  {% include 'jscript.html' %}
+
+  <script>
+    function chkname(){
+      let nm = document.getElementById('name');
+      if(nm.value.length >= 4){
+        nm.style = "border:2px solid green;";
+        document.getElementById('valname').style = "display:none;";
+        return true;
+      }else{
+        nm.style = "border:2px solid red;";
+        document.getElementById('valname').style = "display:block;";
+        return false;
+      }
+    }
+    function chkphone(){
+      var numbers = /^[0-9]{10}$/;
+      let phn = document.getElementById('phone');
+      if(phn.value.match(numbers)){
+        phn.style = "border:2px solid green;";
+        document.getElementById('valphone').style = "display:none;";
+        return true;
+      }else{
+        phn.style = "border:2px solid red;";
+        document.getElementById('valphone').style = "display:block;";
+        return false;
+      }
+    }
+    function chkemail(){
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      let em = document.getElementById('email');
+      if(em.value.match(mailformat)){
+        em.style = "border:2px solid green;";
+        document.getElementById('valemail').style = "display:none;";
+        return true;
+      }else{
+        em.style = "border:2px solid red;";
+        document.getElementById('valemail').style = "display:block;";
+        return false;
+      }
+    }
+    function chkpass(){
+      var decimal=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,12}$/;
+      let psd = document.getElementById('password');
+      if(psd.value.match(decimal)){
+        psd.style = "border:2px solid green;";
+        document.getElementById('valpassword').style = "display:none;";
+        return true;
+      }else{
+        psd.style = "border:2px solid red;";
+        document.getElementById('valpassword').style = "display:block;";
+        return false;
+      }
+    }
+    function chkconfirm(){
+      let pswd = document.getElementById('password');
+      let cpsd = document.getElementById('confirm');
+      if(cpsd.value.match(pswd.value) && cpsd.value.length >= 6){
+        cpsd.style = "border:2px solid green;";
+        document.getElementById('valconfirm').style = "display:none;";
+        return true;
+      }else{
+        cpsd.style = "border:2px solid red;";
+        document.getElementById('valconfirm').style = "display:block;";
+        return false;
+      }
+    }
+    function valid(){
+      nm = chkname();
+      ph = chkphone();
+      em = chkemail();
+      pwd = chkpass();
+      con = chkconfirm();
+      if(nm == true && ph == true && em == true && pwd == true && con == true){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  </script>
+
+</body>
+
+</html>

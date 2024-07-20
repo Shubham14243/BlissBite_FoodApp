@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> BlissBite - Order Details</title>
+
+  {% include 'cscript.html' %}
+  <style>
+    .outerpadding{
+      padding: 50px 20px;
+    }
+    .orderbox{
+      border: 3px solid black;
+      border-radius: 0px;
+      min-height: 50vh;
+      padding: 0px;
+    }
+    .innerbox{
+      margin: 10px;
+    }
+    .orderdetails{
+      background-color: black;
+      color: white;
+    }
+    .hrline{
+        background-color: white;
+        height: 1px;
+        widht: 100%;
+        margin: 15px 0px;
+    }
+    .hrlineblack{
+        background-color: black;
+        height: 1px;
+        widht: 100%;
+        margin: 15px 0px;
+    }
+    .basicpadding{
+        padding: 8px;
+    }
+      .itemcenter{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .colbox{
+        border: 2px solid black;
+        padding: 8px;
+        border-radius: 3px;
+      }
+      .success{
+        background-color: lightgreen;
+      }
+      .failure{
+        background-color: indianred;
+      }
+  </style>
+
+</head>
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    {% include 'header.html' %}
+    <!-- end header section -->
+  </div>
+
+  <!-- food section -->
+
+  <section class="food_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          My Order Details !
+        </h2>
+        {% if msg %}
+              {% if message[0] < 1 %}
+              <div class="alert">
+                <span class="closebtn">&times;</span>
+                <strong>{{message[1]}}</strong>
+              </div>
+              {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="outerpadding">
+          {% if odata %}
+        <div class="row col-13 orderbox">
+          <div class="col-md-7 orderdetails">
+            <div class="innerbox">
+                <div class="row">
+                    <div class="row col-12">
+                        <div class="col-md-6 basicpadding">
+                            Order #{{odata[0]}}
+                        </div>
+                        <div class="col-md-6 basicpadding">
+                            Date & Time : {{odata[2]}}
+                        </div>
+                    </div>
+                    <div class="col-12 hrline"></div>
+                    {% if idata %}
+                    <div class="col-12 basicpadding">
+                        Items Ordered!
+                    </div>
+                    {% for id in idata %}
+                    <div class="d-flex justify-content-between col-12">
+                        <div class="col-md-7 itemcenter basicpadding">
+                            #{{id[2]}}
+                        </div>
+                        <div class="col-md-5 itemcenter basicpadding">
+                            ₹ {{id[3]}} x {{id[0]}} = ₹ {{id[1]}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="col-12 itemcenter basicpadding">
+                        No Items Found!
+                    </div>
+                    {% endif %}
+                    <div class="col-12 hrline"></div>
+                    <div class="d-flex justify-content-between col-12">
+                        <div class="col-md-7 itemcenter basicpadding">
+                            Total
+                        </div>
+                        <div class="col-md-5 itemcenter basicpadding">
+                            ₹ {{odata[3]}}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between col-12">
+                        <div class="col-md-7 itemcenter basicpadding">
+                            Offer Discount
+                        </div>
+                        <div class="col-md-5 itemcenter basicpadding">
+                            - ₹ {{odata[5]}}
+                        </div>
+                    </div>
+                    <div class="col-12 hrline"></div>
+                    <div class="d-flex justify-content-between col-12">
+                        <div class="col-md-7 itemcenter basicpadding">
+                            Net Amount
+                        </div>
+                        <div class="col-md-5 itemcenter basicpadding">
+                            ₹ {{odata[6]}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="innerbox">
+                <div class="row">
+                    <div class="d-flex justify-content-between col-12">
+                        <div class="col-md-7 itemcenter basicpadding">
+                            #Order Status
+                        </div>
+                        <div class="col-md-5 itemcenter basicpadding">
+                            {% if odata[8] == 1 %}
+                            <div class="colbox success">
+                                Successful!
+                            </div>
+                            {% elif odata[8] == -1 %}
+                            <div class="colbox failure">
+                                Failed!
+                            </div>
+                            {% elif odata[8] == 2 %}
+                            <div class="colbox success">
+                                Delivered!
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-12 hrlineblack"></div>
+                    {% if pdata %}
+                    <div class="d-flex justify-content-between col-12">
+                        <div class="col-md-4 itemcenter basicpadding">
+                            #Payment
+                        </div>
+                        <div class="col-md-4 itemcenter basicpadding">
+                            ₹ {{pdata[2]}} | {{pdata[3]}}
+                        </div>
+                        <div class="col-md-4 itemcenter basicpadding">
+                            {% if odata[9] == 1 %}
+                            <div class="colbox success">
+                                Paid!
+                            </div>
+                            {% elif odata[9] == -1 %}
+                            <div class="colbox failure">
+                                Due!
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12 itemcenter basicpadding">
+                        No Payment Found!
+                    </div>
+                    {% endif %}
+                    <div class="col-12 hrlineblack"></div>
+                    <div class="col-12 basicpadding">
+                        Delivery Address
+                    </div>
+                    {% if adata %}
+                    <div class="col-12 itemcenter basicpadding">
+                        {{adata[2]}}
+                    </div>
+                    <div class="col-12 itemcenter basicpadding">
+                        {{adata[3]}}
+                    </div>
+                    <div class="col-12 itemcenter basicpadding">
+                        {{adata[4]}}
+                    </div>
+                    <div class="col-12 itemcenter basicpadding">
+                        {{adata[5]}} - {{adata[6]}}
+                    </div>
+                    {% else %}
+                    <div class="col-12 itemcenter basicpadding">
+                        No Delivery Address Found!
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+          </div>
+        </div>
+          {% else %}
+        <div class="row col-13 orderbox itemcenter basicpadding">
+            <h2 class="section-heading">Nothing Found! Try New Order!</h2>
+        </div>
+          {% endif %}
+        <div class="row col-12" style="padding: 30px;">
+            <div class="col-md-6 itemcenter">
+               <a href="{{url_for('route.profile')}}">
+                  <button class="btn btn-dark btn-lg m-2">
+                      <i class="fa fa-download"></i> Invoice PDF
+                  </button>
+              </a>
+            </div>
+            <div class="col-md-6 itemcenter">
+                <a href="{{url_for('route.profile')}}">
+                      <button class="btn btn-dark btn-lg m-2">
+                          Visit Profile
+                      </button>
+                  </a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end food section -->
+
+  <!-- footer section -->
+  {% include 'footer.html' %}
+  <!-- footer section -->
+
+  {% include 'jscript.html' %}
+
+</body>
+
+</html>

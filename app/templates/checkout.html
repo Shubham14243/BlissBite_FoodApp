@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> BlissBite - Checkout</title>
+
+  {% include 'cscript.html' %}
+
+</head>
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    {% include 'header.html' %}
+    <!-- end header section -->
+  </div>
+
+  <!-- food section -->
+
+  <section class="food_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Order Checkout !
+        </h2>
+        {% if msg %}
+              {% if message[0] < 1 %}
+              <div class="alert">
+                <span class="closebtn">&times;</span>
+                <strong>{{message[1]}}</strong>
+              </div>
+              {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="filters-content layout_padding2">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="contact_section flxcol">
+              <h3 style="padding:20px 20px;">Delivery Details</h3>
+              <div class="form_container" style="border:2px solid black; padding: 30px 30px;">
+                <form action="{{url_for('route.setaddress')}}" method="POST">
+                  <div class="flxrow mb-3">
+                    <select id="address" name="addressid" style="border:2px solid black;height: 50px;width: 100%; white-space: pre-wrap;" required>
+                      <option value="">Select Delivery Address</option>
+                      {% if adata %}
+                      {% for ad in adata %}
+                      {% if ad[7] == 1 %}
+                      <option value="{{ad[0]}}" selected>
+                        {{ad[2]}},{{ad[3]}},{{ad[4]}},{{ad[5]}} - {{ad[6]}}
+                      </option>
+                      {% else %}
+                      <option value="{{ad[0]}}">
+                        {{ad[2]}},{{ad[3]}},{{ad[4]}},{{ad[5]}} - {{ad[6]}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                    </select>
+                  </div>
+                  <div class="btn_box" style="display:flex;justify-content: center;">
+                    <button type="submit">
+                      Select
+                    </button>
+                  </div>
+                  <div class="btn_box" style="display:flex;justify-content: center;padding: 20px;">
+                    <span style="font-weight: bold;">New Address ? &nbsp;&nbsp;&nbsp;&nbsp;<a class="navbar-brand" href="{{url_for('route.addaddress')}}" style="text-decoration:none;"> Add Address</a></span>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <br><br>
+            <div class="contact_section flxcol">
+              <h3 style="padding:20px 20px;">Have Offer Code ?</h3>
+              <div class="form_container" style="border:2px solid black; padding: 30px 30px;">
+                <form action="{{url_for('route.setoffer')}}" method="POST">
+                  <div class="flxcol mb-3">
+                    {% if odata %}
+                    <input type="hidden" name="odid" value="{{odata}}">
+                    {% else %}
+                  Error Occured!
+                  {% endif %}
+                    <label for="code">Enter Code</label>
+                    <input type="text" class="form-control" id="code" name="offercode">
+                  </div>
+                  <div class="btn_box" style="display:flex;justify-content: center;">
+                    <button>
+                      Apply
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="box" style="border-radius:0px; padding: 25px;">
+              <div>
+                <div class="detail-box" style="padding: 20px;">
+                  <h5 style="margin-left:auto;margin-right:auto;"> Order Summary </h5>
+                  {% if sdata %}
+                  {% for sd in sdata %}
+                  <div class="d-flex justify-content-between" style="padding: 8px;">
+                    <div class="">
+                      <p>{{sd[2]}}</p>
+                    </div>
+                    <div class="">
+                      <p>₹ {{sd[3]}} x {{sd[0]}} = ₹ {{sd[1]}}</p>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                  Error Occured!
+                  {% endif %}
+                  <div style="width: 100%;height: 2px;background-color: white;"></div>
+                  {% if tdata %}
+                  <div class="d-flex justify-content-between" style="padding: 8px;">
+                    <div class="">
+                      <p>Total Amount</p>
+                    </div>
+                    <div class="">
+                      <p>₹ {{tdata[0]}}</p>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between" style="padding: 8px;">
+                    <div class="">
+                      <p>Offer Discount</p>
+                    </div>
+                    <div class="">
+                      <p>- ₹ {{tdata[1]}}</p>
+                    </div>
+                  </div>
+                  <div style="width: 100%;height: 2px;background-color: white;"></div> 
+                  <div class="d-flex justify-content-between" style="padding: 8px;">
+                    <div class="">
+                      <p>Net Payable</p>
+                    </div>
+                    <div class="">
+                      <p>₹ {{tdata[2]}}</p>
+                    </div>
+                  </div>
+                  {% else %}
+                  Error Occured!
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="form_container" style="border:2px solid black; padding: 30px 30px;">
+                <form action="{{url_for('route.placeorder')}}" method="POST" class="flxrow">
+                  {% if odata %}
+                    <input type="hidden" name="odid" value="{{odata}}">
+                  {% else %}
+                  Error Occured!
+                  {% endif %}
+                  {% if tdata %}
+                    <input type="hidden" name="total" value="{{tdata[2]}}">
+                  {% else %}
+                  Error Occured!
+                  {% endif %}
+                  <div class="flxitem">
+                    <select style="text-color:black;" name="pay" required>
+                    <option value="">Payment Mode</option>
+                    <option value="UPI">UPI</option>
+                    <option value="CASH">Cash</option>
+                  </select>
+                  </div>
+                  <div class="flxitem">
+                    <button type="submit" class="btn btn-warning">
+                      Place Order <i class="fa fa-arrow-right"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- end food section -->
+
+  <!-- footer section -->
+  {% include 'footer.html' %}
+  <!-- footer section -->
+
+  {% include 'jscript.html' %}
+</body>
+
+</html>

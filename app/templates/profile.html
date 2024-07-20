@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> BlissBite - Profile</title>
+
+  {% include 'cscript.html' %}
+
+</head>
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    {% include 'header.html' %}
+    <!-- end header section -->
+  </div>
+
+  <!-- food section -->
+
+  <section class="food_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          My Profile !
+        </h2>
+        {% if msg %}
+              {% if message[0] < 1 %}
+              <div class="alert">
+                <span class="closebtn">&times;</span>
+                <strong>{{message[1]}}</strong>
+              </div>
+              {% elif message[0] == 1 %}
+                <div class="alert success">
+                  <span class="closebtn">&times;</span>
+                  <strong>{{message[1]}}</strong>
+                </div>
+              {% endif %}
+        {% endif %}
+      </div>
+
+      <ul class="filters_menu">
+        <li class="active" data-filter="*">All</li>
+        <li data-filter=".profile">My Profile</li>
+        <li data-filter=".orders">My Orders</li>
+        <li data-filter=".address">My Address</li>
+        <li data-filter=".book">Book A Table</li>
+        <li data-filter=".review">My Review</li>
+        <li data-filter=".settings">My Settings</li>
+      </ul>
+
+      <div class="filters-content">
+        <div class="row grid">
+          <div class="col-10 boxshad all profile" style="padding:30px;">
+            <div class="row">
+              <div class="col-12 flxcol">
+                <h2>My Profile!</h2>
+              </div>
+              <div class="col-md-6">
+                <img src="images/user.jpg" style="width: 100%;height: 100%;">
+              </div>
+              <div class="col-md-6 flxcol">
+                <div class="heading_container heading_center flxcol" style="width:100%;">
+                  {% if udata %}
+                  <h3 class="sth3">
+                    {{udata[1]}}
+                  </h3>
+                  <br>
+                  <h3 class="sth3">
+                    <i class="fa fa-phone" aria-hidden="true"></i> {{udata[2]}}
+                  </h3>
+                  <br>
+                  <h3 class="sth3">
+                    <i class="fa fa-envelope" aria-hidden="true"></i> {{udata[3]}}
+                  </h3>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-10 boxshad all orders" style="padding:30px;">
+            <div class="row">
+              <div class="col-12 flxcol mb-5">
+                <h2>My Orders!</h2>              
+              </div>
+              <div class="col-12 flxcol">
+                {% if odata %}
+                <table class="table table-responsive table-hover">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Date & Time</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Payment</th>
+                      <th>Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for od in odata %}
+                    <tr>
+                      <td>
+                        {{od[0]}}
+                      </td>
+                      <td>
+                        {{od[1]}}
+                      </td>
+                      <td>
+                        ₹ {{od[2]}}
+                      </td>
+                      <td>
+                        {% if od[3] == 1 %}
+                        <span style="background-color:lightgreen;padding:5px;border-radius:5px;">Successful!</span>
+                        {% elif od[3] == -1 %}
+                        <span style="background-color:indianred;padding:5px;border-radius:5px;">Failed!</span>
+                        {% elif od[3] == 2 %}
+                        <span style="background-color:lightgreen;padding:5px;border-radius:5px;">Delivered!</span>
+                        {% else %}
+                        <span style="background-color:yellow;padding:5px;border-radius:5px;">Pending!</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if od[4] == 1 %}
+                        <span style="background-color:lightgreen;padding:5px;border-radius:5px;">Paid!</span>
+                        {% elif od[4] == -1 %}
+                        <span style="background-color:indianred;padding:5px;border-radius:5px;">Due!</span>
+                        {% else %}
+                        <span style="background-color:yellow;padding:5px;border-radius:5px;">Pending!</span>
+                        {% endif %}
+                      </td>
+                      <td class="flxrow">
+                        <a href="/orderdetail/{{od[0]}}"><button class="btn btn-warning flxitem"><i class="fa fa-eye"></i></button></a>
+                        <a href="/deleteorder/{{od[0]}}"><button class="btn btn-warning flxitem"><i class="fa fa-trash"></i></button></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <h4 class="mb-5">No Orders Found!</h4>
+                <a href="{{url_for('route.menu')}}"><button class="btn btn-outline-dark">New Order</button></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-10 boxshad all address" style="padding:30px;">
+            <div class="row">
+              <div class="col-12 flxcol mb-5">
+                <h2>My Address!</h2>              
+              </div>
+              <div class="col-12 flxcol">
+                {% if adata %}
+                <table class="table  table-hover" style="width:80%;">
+                  <thead>
+                    <tr>
+                      <th>Address</th>
+                      <th>Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for addr in adata %}
+                    <tr>
+                      <td>
+                        {{addr[2]}}, {{addr[3]}}
+                        <br>
+                        {{addr[4]}}, {{addr[5]}} - {{addr[6]}}
+                      </td>
+                      <td class="flxrow">
+                        <a href="/deleteaddress/{{addr[0]}}"><button class="btn btn-warning flxitem"><i class="fa fa-trash"></i></button></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <h4 class="mb-5">No Addresses Found!</h4>
+                {% endif %}
+                <a href="{{url_for('route.addaddress')}}"><button class="btn btn-outline-dark">Add New Address</button></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-10 boxshad all book" style="padding:30px;">
+            <div class="row">
+              <div class="col-12 flxcol">
+                <h2>Book A Table!</h2>
+              </div>
+              <div class="col-md-6">
+                <img src="images/book.jpg" style="width: 100%;height: 100%;">
+              </div>
+              <div class="col-md-6 flxcol">
+                <form method="POST" action="{{url_for('route.add_booking')}}" style="border:1px solid black;padding:40px;border-radius: 5px;">
+                  <div class="flxcol mb-3">
+                    <h5 class="sth3">Select Date & Time</h5>
+                    <input type="hidden" value="{{udata[0]}}" name="userid" required>
+                    <div class="row">
+                      <div class="col-md-6 flxrow">
+                        <input type="date" class=" flxitem" name="bookdate" required>
+                      </div>
+                      <div class="col-md-6 flxrow">
+                        <input type="time" class=" flxitem" name="booktime" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flxcol mb-5">
+                    <h5 class="sth3">Select No of Persons</h5>
+                    <select class="form-control" name="no_person" required>
+                      <option value="">Select an Option</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                      <option value="4">Four</option>
+                      <option value="5">Five</option>
+                      <option value="6">Five +</option>
+                    </select>
+                  </div>
+                  <div class="flxrow">
+                    <button type="submit" class="btn btn-warning">Book</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-13 flxcol" style="width:100%;">
+                <div class="mb-5 flxcol">
+                  <h2>My Bookings</h2>
+                </div>
+                {% if bdata %}
+                <table class="table table-responsive table-hover">
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>No of Persons</th>
+                      <th>Status</th>
+                      <th>Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for book in bdata %}
+                    <tr>
+                      <td>
+                        {{book[0]}}
+                      </td>
+                      <td>
+                        {{book[1]}}
+                      </td>
+                      <td>
+                        {{book[2]}}
+                      </td>
+                      <td>
+                        <span style="margin: 5px;">
+                          {% if book[3] == 6 %}
+                        5+
+                        {% else %}
+                        {{book[3]}}
+                        {% endif %}
+                        </span>
+                      </td>
+                      <td>
+                        {% if book[4] == 1 %}
+                        <span style="background-color:lightgreen;padding:5px;border-radius:5px;">Confirmed!</span>
+                        {% elif book[4] == -1 %}
+                        <span style="background-color:indianred;padding:5px;border-radius:5px;">Cancelled!</span>
+                        {% else %}
+                        <span style="background-color:yellow;padding:5px;border-radius:5px;">Pending!</span>
+                        {% endif %}
+                      </td>
+                      <td class="flxrow">
+                        <a href="/deletebooking/{{book[0]}}"><button class="btn btn-warning flxitem"><i class="fa fa-ban"></i></button></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <h2>No Bookings Found!</h2>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-10 boxshad all review" style="padding:30px;">
+            <div class="row">
+              <div class="col-12 flxcol mb-3">
+                <h2>My Review!</h2>
+              </div>
+              <div class="col-md-6">
+                <img src="images/review.jpg" style="width: 100%;height: 100%;">
+              </div>
+              <div class="col-md-6 flxcol">
+                <form style="border:1px solid black;padding:40px;border-radius: 5px;" action="{{url_for('route.updatereview')}}" method="POST">
+                  <div class="flxcol mb-5">
+                    <h5 class="sth3">Your Ratings!</h5>
+                    <select class="form-control" name="ratings" required>
+                      {% if udata %}
+                      <option value="{{udata[6]}}">{{udata[6]}} Stars</option>
+                      {% else %}
+                      <option value="">Select an Option</option>
+                      {% endif %}
+                      <option value="1">One Star</option>
+                      <option value="2">Two Star</option>
+                      <option value="3">Three Star</option>
+                      <option value="4">Four Star</option>
+                      <option value="5">Five Star</option>
+                    </select>
+                  </div>
+                  <div class="flxcol mb-5">
+                    <h5 class="sth3">Your Message!</h5>
+                    <textarea class="form-control" rows="5" cols="30" name="message" required>{% if udata %}{{udata[5]}}{% endif %}</textarea>
+                  </div>
+                  <div class="flxrow">
+                    <button type="submit" class="btn btn-warning">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-10 boxshad all settings" style="padding:30px;">
+            <div class="row">
+              <div class="col-12 flxcol mb-3">
+                <h2>My Settings!</h2>
+              </div>
+              <div class="col-md-6 mb-5">
+                <form style="border:1px solid black;padding:40px;border-radius: 5px;" method="POST" action="{{url_for('route.updateprofile')}}" onsubmit="return chkproupd();">
+                  <div class="mb-5 flxrow"><h5 class="sth3">Update Account Details!</h5></div>
+                  <div class="flxcol mb-3 ">
+                    <h5 class="sth3">My Name!</h5>
+                    <input type="text" class="form-control" name="username" id="name" value="{{udata[1]}}">
+                    <p id="valname" style="display:none;"><strong><span style="color: red;font-weight: bold;">Enter Valid Name!</span></strong></p>
+                  </div>
+                  <div class="flxcol mb-3">
+                    <h5 class="sth3">My Phone!</h5>
+                    <input type="text" class="form-control" value="{{udata[2]}}" name="userphone" id="phone">
+                    <p id="valphone" style="display:none;"><strong><span style="color: red;font-weight: bold;">Enter Valid Phone!</span></strong></p>
+                  </div>
+                  <div class="flxcol mb-5">
+                    <h5 class="sth3">My Email!</h5>
+                    <input type="hidden" class="form-control" value="{{udata[3]}}" name="useremail">
+                    <input type="email" class="form-control" value="{{udata[3]}}" id="email" disabled>
+                    <p id="valemail" style="display:none;"><strong><span style="color: red;font-weight: bold;">Enter Valid Email!</span></strong></p>
+                  </div>
+                  <div class="flxrow">
+                    <button class="btn btn-warning">Update</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6">
+                <form style="border:1px solid black;padding:40px;border-radius: 5px;" action="{{url_for('route.updatepassword')}}" method="POST" onsubmit="return chkpropass();">
+                  <div class="mb-5 flxrow"><h5 class="sth3">Update Password!</h5></div>
+                  <div class="flxcol mb-3 ">
+                    <h5 class="sth3">My Currrent Password!</h5>
+                    <input type="password" class="form-control" id="password1" name="old" onblur="return chkpass1();">
+                    <p id="valpassword1" style="display:none;"><strong><span style="color: red;font-weight: bold;">Password : 6-12 Digits<br>1 UpperCase; 1 Lowercase; 1 Number; 1 Special Character</span></strong></p>
+                  </div>
+                  <div class="flxcol mb-3">
+                    <h5 class="sth3">My New Password!</h5>
+                    <input type="password" class="form-control" id="password2" name="new" onblur="return chkpass2();">
+                    <p id="valpassword2" style="display:none;"><strong><span style="color: red;font-weight: bold;">Password : 6-12 Digits<br>1 UpperCase; 1 Lowercase; 1 Number; 1 Special Character</span></strong></p>
+                  </div>
+                  <div class="flxcol mb-5">
+                    <h5 class="sth3">Confirm New Password!</h5>
+                    <input type="password" class="form-control" id="confirm" name="conf" onkeyup="return chkconfirm();">
+                    <p id="valconfirm" style="display:none;"><strong><span style="color: red;font-weight: bold;">Password & Confirm Password Not Matched!</span></strong></p>
+                  </div>
+                  <div class="flxrow">
+                    <button type="submit" class="btn btn-warning">Update</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end food section -->
+
+  <!-- footer section -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 footer-col">
+          <div class="footer_contact">
+            <h4>
+              Contact Us
+            </h4>
+            <div class="contact_link_box">
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>
+                  Kormangala, Bangalore
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span>
+                   +91 9988776655
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>
+                  BlissBite@email.com
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 footer-col">
+          <div class="footer_detail">
+            <a href="" class="footer-logo">
+              BlissBite
+            </a>
+            <p>
+              Join us in a gastronomic rendezvous at our fast-food sanctuary, where quick bites meet gourmet satisfaction, creating a dining experience that's as swift as it is scrumptious.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4 footer-col">
+          <h4>
+            Opening Hours
+          </h4>
+          <p>
+            Everyday
+          </p>
+          <p>
+            10.00 Am -10.00 Pm
+          </p>
+        </div>
+      </div>
+      <div class="footer-info" style="display:none;">
+        <p>
+          &copy; <span id="displayYear"></span> All Rights Reserved By
+          <a href="https://html.design/">Free Html Templates</a><br>
+        </p>
+      </div>
+    </div>
+  </footer>
+  <!-- footer section -->
+
+  {% include 'jscript.html' %}
+
+<script>
+    function chkname(){
+      let nm = document.getElementById('name');
+      if(nm.value.length >= 4){
+        nm.style = "border:2px solid green;";
+        document.getElementById('valname').style = "display:none;";
+        return true;
+      }else{
+        nm.style = "border:2px solid red;";
+        document.getElementById('valname').style = "display:block;";
+        return false;
+      }
+    }
+    function chkphone(){
+      var numbers = /^[0-9]{10}$/;
+      let phn = document.getElementById('phone');
+      if(phn.value.match(numbers)){
+        phn.style = "border:2px solid green;";
+        document.getElementById('valphone').style = "display:none;";
+        return true;
+      }else{
+        phn.style = "border:2px solid red;";
+        document.getElementById('valphone').style = "display:block;";
+        return false;
+      }
+    }
+    function chkemail(){
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      let em = document.getElementById('email');
+      if(em.value.match(mailformat)){
+        em.style = "border:2px solid green;";
+        document.getElementById('valemail').style = "display:none;";
+        return true;
+      }else{
+        em.style = "border:2px solid red;";
+        document.getElementById('valemail').style = "display:block;";
+        return false;
+      }
+    }
+    function chkpass1(){
+      var decimal=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,12}$/;
+      let psd = document.getElementById('password1');
+      if(psd.value.match(decimal)){
+        psd.style = "border:2px solid green;";
+        document.getElementById('valpassword1').style = "display:none;";
+        return true;
+      }else{
+        psd.style = "border:2px solid red;";
+        document.getElementById('valpassword1').style = "display:block;";
+        return false;
+      }
+    }
+    function chkpass2(){
+      var decimal=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,12}$/;
+      let psd = document.getElementById('password2');
+      if(psd.value.match(decimal)){
+        psd.style = "border:2px solid green;";
+        document.getElementById('valpassword2').style = "display:none;";
+        return true;
+      }else{
+        psd.style = "border:2px solid red;";
+        document.getElementById('valpassword2').style = "display:block;";
+        return false;
+      }
+    }
+    function chkconfirm(){
+      let pswd = document.getElementById('password2');
+      let cpsd = document.getElementById('confirm');
+      if(cpsd.value.match(pswd.value) && cpsd.value.length >= 6){
+        cpsd.style = "border:2px solid green;";
+        document.getElementById('valconfirm').style = "display:none;";
+        return true;
+      }else{
+        cpsd.style = "border:2px solid red;";
+        document.getElementById('valconfirm').style = "display:block;";
+        return false;
+      }
+    }
+    function chkproupd(){
+      nm = chkname();
+      ph = chkphone();
+      em = chkemail();
+      if(nm == true && ph == true && em == true){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    function chkpropass(){
+      nm = chkpass1();
+      ph = chkpass2();
+      em = chkconfirm();
+      if(nm == true && ph == true && em == true){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  </script>
+</body>
+
+</html>

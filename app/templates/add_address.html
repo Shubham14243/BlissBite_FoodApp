@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> BlissBite - Add Address</title>
+
+  {% include 'cscript.html' %}
+
+</head>
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    {% include 'header.html' %}
+    <!-- end header section -->
+  </div>
+
+  <!-- book section -->
+  <section class="book_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Add Address
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <div class="form_container">
+            <form action="{{url_for('route.addaddress')}}" method="POST">
+              <div>
+                <input type="hidden" name="userid" class="form-control" value="{{uid}}" required/>
+              </div>
+              <div>
+                <input type="text" name="landmark" class="form-control" placeholder="Landmark" required/>
+              </div>
+              <div>
+                <input type="text" name="add1" class="form-control" placeholder="Address Line1" required/>
+              </div>
+              <div>
+                <input type="text" name="add2" class="form-control" placeholder="Address Line2" required/>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="text" name="city" class="form-control" placeholder="City" required/>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" name="pincode" class="form-control" placeholder="Pincode" required/>
+                </div>
+              </div>
+              <div class="btn_box" style="display:flex;justify-content: center;">
+                <button type="submit">
+                  Add
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+    </div>
+  </section>
+  <!-- end book section -->
+
+  <!-- footer section -->
+  {% include 'footer.html' %}
+  <!-- footer section -->
+
+  {% include 'jscript.html' %}
+
+</body>
+
+</html>

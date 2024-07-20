@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> BlissBite - Cart</title>
+
+  {% include 'cscript.html' %}
+
+</head>
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    {% include 'header.html' %}
+    <!-- end header section -->
+  </div>
+
+  <!-- food section -->
+
+  <section class="food_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          My Cart !
+        </h2>
+        {% if msg %}
+              {% if message[0] < 1 %}
+              <div class="alert">
+                <span class="closebtn">&times;</span>
+                <strong>{{message[1]}}</strong>
+              </div>
+              {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="filters-content layout_padding2">
+        <div class="row grid">
+          {% if cdata %}
+          {% for cd in cdata %}
+          <div class="col-sm-6 col-lg-4 all pizza">
+            <div class="box">
+              <div>
+                <div class="img-box">
+                  <img src="{{cd[5]}}" alt="">
+                </div>
+                <div class="detail-box">
+                  <div class="flxcol">
+                    <h5>{{cd[4]}}</h5>
+                    <h6> Price : ₹ {{cd[3]}} </h6>
+                    <div class="flxrow">
+                      <h6 class="flxitem">Quantity : </h6>
+                      <form action="{{url_for('route.updatecart')}}" method="POST">
+                      <input class="cartinput flxitem" type="number" name="quantity" value="{{cd[2]}}">
+                    </div>
+                    <div class="flxrow">
+                        <input type="hidden" name="cartid" value="{{cd[0]}}">
+                        <input type="hidden" name="itemid" value="{{cd[1]}}">
+                        <button type="submit" class="btn btn-warning flxitem"><i class="text-dark fa fa-check"></i></button>
+                      </form>
+                      <a class="flxitem" href="removecart/{{cd[0]}}"><button class="btn btn-warning"><i class="text-dark fa fa-close"></i></button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <div class="row col-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+              <h2>Nothing Found! Add Some?</h2>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="heading_container heading_center">
+        <div class="row col-12">
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+            <div class="box" style="border-radius:0px; padding: 25px;">
+              <div>
+                <div class="detail-box" style="padding: 20px;">
+                  <h5 style="margin-left:auto;margin-right:auto;"> Cart Summary </h5>
+                  <div class="d-flex justify-content-between" style="padding: 8px;">
+                    <div class="">
+                      <p>Total Amount</p>
+                    </div>
+                    <div class="">
+                      {% if total %}
+                      <p>₹ {{total}}</p>
+                      {% else %}
+                      Not Found!
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row col-12" style="border:2px solid black; margin: 0px; padding:25px;">
+                <div class="col-md-6">
+                  <div class="btn_box" style="display:flex;justify-content: center;">
+                    <a href="{{url_for('route.menu')}}">
+                      <button class="btn btn-warning btn-lg m-2">
+                        <i class="fa fa-arrow-left"></i> Menu
+                      </button>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="btn_box" style="display:flex;justify-content: center;">
+                    <a href="{{url_for('route.checkout')}}">
+                      <button class="btn btn-warning btn-lg m-2">
+                        Checkout <i class="fa fa-arrow-right"></i>
+                      </button>
+                    </a>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end food section -->
+
+  <!-- footer section -->
+  {% include 'footer.html' %}
+  <!-- footer section -->
+
+  {% include 'jscript.html' %}
+
+</body>
+
+</html>
